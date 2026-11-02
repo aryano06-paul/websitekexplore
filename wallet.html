@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Your tickets — PASSX</title>
+  <meta name="description" content="Your PASSX wallet: every ticket you have booked, with QR codes and live countdowns.">
+  <meta name="theme-color" content="#1C1B33">
+  <meta name="color-scheme" content="dark light">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="PASSX">
+  <meta property="og:title" content="Your tickets — PASSX">
+  <meta property="og:description" content="Your PASSX wallet: every ticket you have booked, with QR codes and live countdowns.">
+  <meta property="og:image" content="assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="PASSX — book and explore upcoming events">
+  <meta name="twitter:card" content="summary_large_image">
+  <script>
+    /* Pre-paint: theme (no flash), JS flag, page-wipe state, image fallback. No globals leaked. */
+    (function () {
+      var d = document.documentElement, t = null;
+      try { t = localStorage.getItem('px.theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') t = window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      d.setAttribute('data-theme', t);
+      d.classList.add('js');
+      try { if (sessionStorage.getItem('px.wipe')) { sessionStorage.removeItem('px.wipe'); d.classList.add('is-entering'); } } catch (e) {}
+      setTimeout(function () { if (!d.classList.contains('motion-ready')) { d.classList.add('motion-fallback'); d.classList.remove('is-entering'); } }, 4000);
+      document.addEventListener('error', function (e) {
+        var i = e.target;
+        if (!i || i.tagName !== 'IMG' || i.getAttribute('data-failed')) return;
+        i.setAttribute('data-failed', '1');
+        var w = +i.getAttribute('width') || 900, h = +i.getAttribute('height') || 600;
+        var l = String(i.getAttribute('data-label') || 'PASSX').toUpperCase().replace(/[<>&"']/g, '');
+        i.src = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '"><rect width="100%" height="100%" fill="#2F2D57"/><path d="M' + (w / 2 - 36) + ' ' + (h / 2 - 64) + 'h72v14a8 8 0 0 0 0 16v14h-72v-14a8 8 0 0 0 0-16z" fill="none" stroke="#A9A7C8" stroke-width="3" stroke-linejoin="round"/><text x="50%" y="' + (h / 2 + 24) + '" fill="#A9A7C8" font-family="system-ui,sans-serif" font-size="' + Math.max(14, Math.round(Math.min(w, h) / 16)) + '" font-weight="600" letter-spacing="3" text-anchor="middle">' + l + '</text></svg>');
+      }, true);
+    })();
+  </script>
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&amp;f[]=general-sans@400,500,600&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&amp;family=Unbounded:wght@600;700&amp;display=swap">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script type="module" src="js/wallet.js"></script>
+</head>
+<body id="top">
+  <div class="page-wipe" aria-hidden="true"></div>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="logo" href="index.html" aria-label="PASSX home"><span class="logo__pass">PASS</span><span class="logo__x">X</span></a>
+      <nav class="nav__links" aria-label="Primary">
+        <a class="nav__link" href="index.html#top">Home</a>
+        <a class="nav__link" href="index.html#events">Events</a>
+        <a class="nav__link" href="index.html#schedule">Schedule</a>
+        <a class="nav__link" href="index.html#venue">Venue</a>
+      </nav>
+      <div class="nav__actions">
+        <a class="contact-link" href="mailto:hello@passx.events">Contact us <span class="icon-btn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span></a>
+        <a class="icon-btn icon-btn--ghost wallet-link" href="wallet.html" aria-label="My tickets" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4z"/><path d="M15 5v2"/><path d="M15 11v2"/><path d="M15 17v2"/></svg><span class="icon-btn__count" data-wallet-count hidden>0</span></a>
+        <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme">
+          <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+          <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+        <button class="icon-btn icon-btn--ghost menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 9h16"/><path d="M4 15h16"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Site menu" data-lenis-prevent hidden>
+    <div class="menu__top">
+      <a class="logo" href="index.html" aria-label="PASSX home"><span class="logo__pass">PASS</span><span class="logo__x">X</span></a>
+      <button class="icon-btn menu__close" type="button" aria-label="Close menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12"/><path d="M18 6 6 18"/></svg></button>
+    </div>
+    <nav class="menu__links" aria-label="Mobile">
+      <a class="menu__link" href="index.html#top"><span>Home</span></a>
+      <a class="menu__link" href="index.html#events"><span>Events</span></a>
+      <a class="menu__link" href="index.html#schedule"><span>Schedule</span></a>
+      <a class="menu__link" href="index.html#venue"><span>Venue</span></a>
+      <a class="menu__link" href="wallet.html"><span>My tickets</span></a>
+    </nav>
+    <div class="menu__foot">
+      <a href="mailto:hello@passx.events">hello@passx.events</a>
+      <span>© 2026 PASSX</span>
+    </div>
+  </div>
+
+  <main id="main" tabindex="-1">
+    <div class="container">
+      <header class="wallet-head">
+        <h1 class="h-display" data-intro>Your tickets</h1>
+        <p class="wallet-head__count" data-intro data-wallet-total aria-live="polite">00 tickets</p>
+      </header>
+      <div data-wallet></div>
+    </div>
+    <div class="section--tight"></div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a class="logo" href="index.html" aria-label="PASSX home"><span class="logo__pass">PASS</span><span class="logo__x">X</span></a>
+          <p>Your front-row pass to tech nights, gigs, workshops, sport, art and talks.</p>
+          <div class="socials">
+            <a class="icon-btn" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="PASSX on Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a>
+            <a class="icon-btn" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="PASSX on YouTube (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3z"/></svg></a>
+            <a class="icon-btn" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="PASSX on LinkedIn (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 11v5"/><path d="M8 8v.01"/><path d="M12 16v-5"/><path d="M16 16v-3a2 2 0 0 0-4 0"/></svg></a>
+            <a class="icon-btn" href="mailto:hello@passx.events" aria-label="Email PASSX"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></a>
+          </div>
+        </div>
+
+        <form class="newsletter" id="newsletter" novalidate aria-labelledby="nl-title">
+          <h2 class="h-display newsletter__title" id="nl-title">Subscribe to our newsletter</h2>
+          <label class="sr-only" for="nl-email">Email address</label>
+          <div class="newsletter__field">
+            <input id="nl-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="Your email address" aria-describedby="nl-msg">
+            <button class="arrow-circle" type="submit" aria-label="Subscribe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></button>
+          </div>
+          <p class="newsletter__msg" id="nl-msg" role="status" aria-live="polite"></p>
+        </form>
+
+        <nav class="footer__nav" aria-label="Footer">
+          <a href="index.html#events">Events</a>
+          <a href="index.html#speakers">Speakers</a>
+          <a href="index.html#schedule">Schedule</a>
+          <a href="wallet.html">My tickets</a>
+          <a href="mailto:hello@passx.events">Contact</a>
+        </nav>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2026 PASSX · Built for K Explore</span>
+        <div class="footer__legal">
+          <button type="button" data-modal="terms">Terms</button>
+          <button type="button" data-modal="privacy">Privacy</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
