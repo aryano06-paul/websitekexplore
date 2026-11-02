@@ -1,0 +1,172 @@
+/* ==========================================================================
+   PASSX — base / reset / typography / utilities
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  background: var(--bg);
+}
+
+/* Lenis (inlined from lenis/dist/lenis.css) */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+
+img, svg, video, canvas { display: block; max-width: 100%; }
+img { height: auto; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+p { margin: 0 0 1em; }
+h1, h2, h3, h4 { margin: 0; font-weight: 600; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+dl, dd, figure { margin: 0; }
+[hidden] { display: none !important; }
+
+:focus { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+::selection { background: var(--lime); color: var(--lime-ink); }
+
+/* ---------- Typography ---------- */
+.h-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+.h-hero { font-size: var(--fs-hero); font-weight: 600; }
+.h-section { font-size: var(--fs-h2); text-wrap: balance; }
+.h-card { font-size: var(--fs-h3); line-height: 1.05; }
+
+.label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+}
+.label--accent { color: var(--accent-text); }
+.muted { color: var(--text-muted); }
+.lead { font-size: clamp(1rem, 1.2vw, 1.125rem); color: var(--text-muted); max-width: 52ch; }
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* ---------- Layout ---------- */
+.container {
+  width: min(100% - 2 * var(--gutter), var(--maxw));
+  margin-inline: auto;
+}
+.section { padding-block: clamp(64px, 9vw, 128px); }
+.section--tight { padding-block: clamp(40px, 6vw, 80px); }
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px 40px;
+  margin-bottom: clamp(28px, 4vw, 48px);
+}
+.section-head .lead { margin: 0; }
+
+/* ---------- Photos: always grayscale, colour on hover ---------- */
+.photo {
+  filter: grayscale(1) contrast(1.05);
+  transition: filter var(--dur-photo) var(--ease);
+  background: var(--placeholder);
+}
+img[data-failed] { filter: none !important; }
+.photo-hover:hover .photo,
+.photo-hover:focus-visible .photo { filter: grayscale(0) contrast(1); }
+
+/* ---------- Accessibility helpers ---------- */
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: fixed;
+  top: 12px; left: 12px;
+  z-index: 1000;
+  padding: 12px 18px;
+  border-radius: var(--r-pill);
+  background: var(--lime);
+  color: var(--lime-ink);
+  font-weight: 600;
+  transform: translateY(-160%);
+  transition: transform var(--dur) var(--ease);
+}
+.skip-link:focus-visible { transform: none; outline-color: var(--text); }
+
+/* ---------- Reduced motion: kill CSS motion globally ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Pre-paint intro states (only when motion is allowed and JS runs) ----------
+   html.js is set by the inline head script. If the motion module hasn't
+   initialised after 4s (CDN blocked), .motion-fallback reveals everything. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js:not(.motion-fallback):not(.motion-ready) .split .w > span { transform: translateY(105%); }
+  html.js:not(.motion-fallback):not(.motion-ready) .split .h-icon { transform: scale(0); }
+  html.js:not(.motion-fallback):not(.motion-ready) [data-intro] { opacity: 0; }
+}
+
+/* ---------- Cross-document view transitions (page wipe) ---------- */
+@view-transition { navigation: auto; }
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+}
+html:not(.vt-theme)::view-transition { background: #E4FF5A; }
+html:not(.vt-theme)::view-transition-old(root) {
+  animation: vt-wipe-out 320ms cubic-bezier(.7, 0, .3, 1) both;
+}
+html:not(.vt-theme)::view-transition-new(root) {
+  animation: vt-wipe-in 320ms 260ms cubic-bezier(.7, 0, .3, 1) both;
+}
+@keyframes vt-wipe-out { from { clip-path: inset(0 0 0 0); } to { clip-path: inset(0 0 100% 0); } }
+@keyframes vt-wipe-in { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+/* Theme switch: circular reveal (clip-path animated from JS) */
+html.vt-theme::view-transition-old(root),
+html.vt-theme::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+html.vt-theme::view-transition-new(root) { z-index: 2; }
+
+/* Crossfade fallback for browsers without the View Transitions API */
+html.theme-fading body,
+html.theme-fading body * {
+  transition: background-color 350ms var(--ease), color 350ms var(--ease), border-color 350ms var(--ease), fill 350ms var(--ease) !important;
+}

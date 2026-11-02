@@ -1,0 +1,73 @@
+/* ==========================================================================
+   PASSX — design tokens
+   Flat colour blocks only: no gradients, no glass, no glows.
+   ========================================================================== */
+
+:root {
+  /* Palette — dark (default) */
+  --bg: #1C1B33;
+  --surface: #26254A;
+  --surface-2: #2F2D57;
+  --line: rgba(255, 255, 255, 0.08);
+  --text: #FFFFFF;
+  --text-muted: #A9A7C8;
+  --lime: #E4FF5A;
+  --lime-ink: #1C1B33;
+  --violet: #6C4EF2;
+  --violet-hover: #7D62FF;
+  --navy: #1C1B33;
+  --danger: #FF6B6B;
+
+  /* Derived roles */
+  --accent-text: var(--lime);      /* lime used as text only on dark surfaces */
+  --lime-border: transparent;      /* becomes navy in light theme */
+  --focus: var(--lime);
+  --ticket-shadow: #9EB236;        /* darker lime used for the 3D ticket "back" */
+  --overlay: rgba(28, 27, 51, 0.75);
+  --placeholder: #2F2D57;
+
+  /* Type */
+  --font-display: "Clash Display", "Unbounded", "Arial Black", system-ui, sans-serif;
+  --font-body: "General Sans", "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fs-hero: clamp(2.6rem, 7vw, 6rem);
+  --fs-h2: clamp(2rem, 4.6vw, 3.75rem);
+  --fs-h3: clamp(1.15rem, 1.6vw, 1.4rem);
+  --fs-ui: 13px;
+
+  /* Shape */
+  --r-card: 20px;
+  --r-tile: 16px;
+  --r-input: 14px;
+  --r-pill: 999px;
+
+  /* Motion */
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --dur: 250ms;
+  --dur-photo: 600ms;
+
+  /* Layout */
+  --gutter: clamp(16px, 4vw, 40px);
+  --maxw: 1320px;
+  --nav-h: 76px;
+  --tap: 44px;
+
+  color-scheme: dark;
+}
+
+/* Light theme: soft lavender page, white cards, lime kept but outlined in navy */
+[data-theme="light"] {
+  --bg: #ECE8FF;
+  --surface: #FFFFFF;
+  --surface-2: #F4F1FF;
+  --line: rgba(28, 27, 51, 0.12);
+  --text: #1C1B33;
+  --text-muted: #5E5A86;
+  --accent-text: #5B3DE0;          /* lime text would fail AA on lavender — swap to deep violet */
+  --lime-border: #1C1B33;
+  --focus: #1C1B33;
+  --danger: #C2312F;               /* #FF6B6B fails AA on lavender; deeper red keeps the same tone */
+  --ticket-shadow: #1C1B33;
+  --placeholder: #DCD6FA;
+
+  color-scheme: light;
+}

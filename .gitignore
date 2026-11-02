@@ -1,0 +1,11 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Dependencies / tooling (the site itself has no build step)
+node_modules/
+.netlify/
+*.log
