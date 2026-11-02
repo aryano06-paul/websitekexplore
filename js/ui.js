@@ -386,6 +386,8 @@ export function openModal(kind, trigger) {
     dlg.setAttribute('data-lenis-prevent', '');
     document.body.append(dlg);
     dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+    // Esc is normally handled natively; this covers browsers whose close watcher skips it.
+    dlg.addEventListener('keydown', (e) => { if (e.key === 'Escape' && dlg.open) { e.preventDefault(); dlg.close(); } });
     dlg.addEventListener('close', () => {
       unlockScroll();
       const back = dlg._trigger;
@@ -402,7 +404,10 @@ export function openModal(kind, trigger) {
   if (typeof dlg.showModal === 'function') {
     lockScroll();
     dlg.showModal();
-    if (canAnimate) gsap.from(dlg, { y: 30, opacity: 0, duration: 0.4, ease: 'power3.out', clearProps: 'transform,opacity' });
+    dlg.querySelector('[data-modal-close]').focus();
+    // Animate the inner wrapper: tweening transforms on the top-layer <dialog> itself
+    // makes GSAP re-parent it while measuring, which silently drops modality.
+    if (canAnimate) gsap.from(dlg.firstElementChild, { y: 30, opacity: 0, duration: 0.4, ease: 'power3.out', clearProps: 'transform,opacity' });
   }
 }
 

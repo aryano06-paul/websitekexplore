@@ -208,6 +208,13 @@ export function initBooking({ event: pageEvent, onBooked }) {
     });
   });
 
+  // Blur-validation inserts error text, which shifts the layout. If a mouse press
+  // on a button/label blurred the previous field, mouseup would land on a moved
+  // target and the click would be lost. Keep focus put during the press instead.
+  $$('button, .check', form).forEach((el) => {
+    el.addEventListener('mousedown', (e) => { if (e.button === 0) e.preventDefault(); });
+  });
+
   /* ---------- Submit ---------- */
   function announce(msg) {
     status.textContent = '';
