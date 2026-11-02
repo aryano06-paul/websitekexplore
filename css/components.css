@@ -424,6 +424,10 @@
   transform: translateX(-50%);
   pointer-events: none;
 }
+@media (min-width: 768px) {
+  /* bottom-left so toasts never sit on top of the right-hand booking drawer */
+  .toasts { left: 24px; bottom: 24px; transform: none; }
+}
 .toast {
   display: flex;
   align-items: center;
