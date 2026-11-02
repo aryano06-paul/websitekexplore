@@ -8,6 +8,7 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   background: var(--bg);
+  overflow-x: clip;        /* floating/tilting art must never cause sideways scroll */
 }
 
 /* Lenis (inlined from lenis/dist/lenis.css) */
