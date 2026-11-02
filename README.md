@@ -2,7 +2,7 @@
 
 **Book and explore upcoming events — a bold, motion-rich event site with search, booking, QR tickets and a wallet. Built with plain HTML, CSS and JavaScript.**
 
-Live: 
+Live: **https://aryano06-paul.github.io/websitekexplore/**
 
 > Built for the **K Explore** web-design task. HTML5, CSS3 and vanilla ES modules: no framework and no build step. The only libraries are GSAP (+ ScrollTrigger, Flip) and Lenis, loaded from public CDNs.
 
@@ -247,7 +247,7 @@ Then open <http://localhost:3000> (serve) or <http://localhost:8080>.
 1. Push this folder to a GitHub repository (see the commands below).
 2. Go to **Settings → Pages → Build and deployment**, choose **Deploy from a branch**, then pick **`main`** and **`/ (root)`**.
 3. The site goes live at `https://<user>.github.io/<repo>/`. All paths are relative, so it works from a sub-path.
-4. Optional: change `og:image` in the three HTML files to an absolute URL, because some social scrapers ignore relative paths.
+4. `og:image` points at the live Pages URL. If you fork or rename the repo, update it in the three HTML files.
 
 ### Netlify
 
